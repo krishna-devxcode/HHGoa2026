@@ -6,13 +6,11 @@ const fs = require('fs');
 const crypto = require('crypto');
 const app = express();
 
-// Serve static files from parent directory
-const staticDir = path.join(__dirname, '..');
-app.use(express.static(staticDir));
-
 // Ensure uploads directory exists
 const uploadDir = path.join(__dirname, '..', 'uploads');
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+
+const staticDir = path.join(__dirname, '..');
 
 // Configure multer for memory storage
 const storage = multer.memoryStorage();
@@ -103,9 +101,27 @@ app.get('/share/:filename', (req, res) => {
   `);
 });
 
-// Serve index.html for all other routes (SPA)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(staticDir, 'index.html'));
+// Serve static files explicitly
+app.get('/:file(*)', (req, res, next) => {
+  const filePath = path.join(staticDir, req.params.file);
+  
+  // Security: prevent directory traversal
+  const normalized = path.normalize(filePath);
+  if (!normalized.startsWith(staticDir)) {
+    return res.status(403).send('Forbidden');
+  }
+
+  // Try to serve the static file if it exists
+  if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+    return res.sendFile(filePath);
+  }
+  
+  // If it's a non-API route and file doesn't exist, serve index.html (SPA)
+  if (!req.path.startsWith('/api') && !req.path.startsWith('/share')) {
+    return res.sendFile(path.join(staticDir, 'index.html'));
+  }
+  
+  res.status(404).send('Not found');
 });
 
 // Export for Vercel
