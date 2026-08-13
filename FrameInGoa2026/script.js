@@ -3,7 +3,7 @@
 
   // Backend used only for the working link-share flow (dynamic OG image preview).
   // Leave empty ('') to disable link-preview sharing and rely on native file share / download only.
-  const BACKEND_URL = "http://localhost:3000";
+  const BACKEND_URL = window.location.host.includes('localhost') ? "http://localhost:3000" : "";
 
   const ringImg = new Image();
   let ringImgReady = false;
@@ -531,7 +531,8 @@
     const fd = new FormData();
     fd.append('image', blob, filenameFor());
     fd.append('caption', caption);
-    const res = await fetch(BACKEND_URL.replace(/\/$/,'') + '/api/upload', { method:'POST', body: fd });
+    const uploadUrl = BACKEND_URL ? BACKEND_URL.replace(/\/$/,'') + '/api/upload' : '/api/upload';
+    const res = await fetch(uploadUrl, { method:'POST', body: fd });
     if(!res.ok) throw new Error('upload failed');
     const data = await res.json();
     return data.shareUrl; // e.g. https://your-backend/share/abc123
