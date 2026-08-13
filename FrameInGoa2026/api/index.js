@@ -6,6 +6,10 @@ const fs = require('fs');
 const crypto = require('crypto');
 const app = express();
 
+// Serve static files from parent directory
+const staticDir = path.join(__dirname, '..');
+app.use(express.static(staticDir));
+
 // Ensure uploads directory exists
 const uploadDir = path.join(__dirname, '..', 'uploads');
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
@@ -59,7 +63,7 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
 });
 
 // Serve a simple HTML page for the shared image with OG tags
-app.get('/api/share/:filename', (req, res) => {
+app.get('/share/:filename', (req, res) => {
   const filename = req.params.filename;
   const filepath = path.join(uploadDir, filename);
   
@@ -97,6 +101,11 @@ app.get('/api/share/:filename', (req, res) => {
       </body>
     </html>
   `);
+});
+
+// Serve index.html for all other routes (SPA)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(staticDir, 'index.html'));
 });
 
 // Export for Vercel

@@ -1,9 +1,15 @@
 {
   "version": 2,
-  "builds": [
+  "buildCommand": "true",
+  "outputDirectory": ".",
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "redirects": [
     {
-      "src": "api/index.js",
-      "use": "@vercel/node"
+      "source": "/api/upload",
+      "destination": "/api/index.js",
+      "permanent": false
     }
   ],
   "routes": [
@@ -16,8 +22,9 @@
       "dest": "/api/index.js"
     },
     {
-      "src": "/(.*)",
-      "dest": "index.html"
+      "src": "/(?!api|share).*",
+      "dest": "/index.html",
+      "status": 200
     }
   ]
 }
