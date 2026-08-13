@@ -64,6 +64,7 @@
       btn.classList.add('active');
       mode = btn.dataset.tab;
       badgeFields.style.display = mode==='badge' ? 'block' : 'none';
+      if($('previewBtn')) $('previewBtn').style.display = mode==='badge' ? 'inline-block' : 'none';
       outStepNum.textContent = mode==='badge' ? '3' : '2';
       stage.classList.toggle('rect', mode==='badge');
       syncCropCanvasSize();
@@ -613,6 +614,7 @@
     showStatus('Image downloaded — attach it to the tweet that just opened.');
   });
 
+  if($('previewBtn')) $('previewBtn').style.display = mode==='badge' ? 'inline-block' : 'none';
   syncCropCanvasSize();
   drawCrop();
   drawFinal();
