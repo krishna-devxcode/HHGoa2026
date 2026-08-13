@@ -101,10 +101,7 @@ app.get('/share/:filename', (req, res) => {
   `);
 });
 
-// Serve static files from public folder
-app.use(express.static(publicDir));
-
-// SPA fallback - serve index.html for all non-API routes
+// SPA fallback - serve index.html for all unmatched routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(publicDir, 'index.html'));
 });

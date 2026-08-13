@@ -1,6 +1,11 @@
 {
   "version": 2,
+  "public": "public",
   "builds": [
+    {
+      "src": "public/**/*",
+      "use": "@vercel/static"
+    },
     {
       "src": "api/index.js",
       "use": "@vercel/node"
@@ -16,15 +21,12 @@
       "dest": "/api/index.js"
     },
     {
-      "src": "/public/(.*)",
+      "src": "/(.*\\..+)$",
       "dest": "/public/$1"
     },
     {
       "src": "/(.*)",
       "dest": "/api/index.js"
     }
-  ],
-  "env": {
-    "NODE_ENV": "production"
-  }
+  ]
 }
