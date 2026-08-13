@@ -10,7 +10,7 @@ const app = express();
 const uploadDir = path.join(__dirname, '..', 'uploads');
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 
-const staticDir = path.join(__dirname, '..');
+const publicDir = path.join(__dirname, '..', 'public');
 
 // Configure multer for memory storage
 const storage = multer.memoryStorage();
@@ -101,27 +101,12 @@ app.get('/share/:filename', (req, res) => {
   `);
 });
 
-// Serve static files explicitly
-app.get('/:file(*)', (req, res, next) => {
-  const filePath = path.join(staticDir, req.params.file);
-  
-  // Security: prevent directory traversal
-  const normalized = path.normalize(filePath);
-  if (!normalized.startsWith(staticDir)) {
-    return res.status(403).send('Forbidden');
-  }
+// Serve static files from public folder
+app.use(express.static(publicDir));
 
-  // Try to serve the static file if it exists
-  if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
-    return res.sendFile(filePath);
-  }
-  
-  // If it's a non-API route and file doesn't exist, serve index.html (SPA)
-  if (!req.path.startsWith('/api') && !req.path.startsWith('/share')) {
-    return res.sendFile(path.join(staticDir, 'index.html'));
-  }
-  
-  res.status(404).send('Not found');
+// SPA fallback - serve index.html for all non-API routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(publicDir, 'index.html'));
 });
 
 // Export for Vercel
