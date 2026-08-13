@@ -24,6 +24,9 @@ function generateShareId() {
   return crypto.randomBytes(8).toString('hex');
 }
 
+// Serve static files from public folder FIRST
+app.use(express.static(publicDir));
+
 // POST /api/upload – receives image, saves it, returns shareable URL
 app.post('/api/upload', upload.single('image'), (req, res) => {
   try {
