@@ -99,6 +99,7 @@
           <canvas id="finalCanvas" width="1080" height="1080"></canvas>
         </div>
         <div class="btn-row">
+          <button class="btn btn-secondary" id="previewBtn">👁️ Preview Graphic</button>
           <button class="btn btn-primary" id="downloadBtn">Download image</button>
           <button class="btn btn-x" id="shareBtn">Share to X</button>
         </div>
@@ -112,6 +113,25 @@
   </div>
 
 </div>
+
+<!-- Full Graphic Preview Modal -->
+<div class="modal-overlay hidden" id="previewModal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3 class="modal-title">👁️ Graphic Preview</h3>
+      <button class="modal-close" id="closePreviewModalBtn" title="Close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <img id="modalPreviewImg" src="" alt="Full Graphic Preview">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" id="modalDownloadBtn">Download image</button>
+      <button class="btn btn-x" id="modalShareBtn">Share to X</button>
+      <button class="btn btn-secondary" id="modalCloseBtn">Close</button>
+    </div>
+  </div>
+</div>
+
 <canvas id="cursorFx"></canvas>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.12.3/JsBarcode.all.min.js"></script>

@@ -1,120 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>HH Goa 2026 — Graphic Maker</title>
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hacker House Goa 2026 — #FrameInGoa">
-<meta property="og:description" content="Make your Hacker House Goa 2026 PFP frame or Builder Badge and share it.">
-<meta property="og:image" content="https://hhgoa.com/og-default.png">
-<meta property="og:url" content="https://hhgoa.com/">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Hacker House Goa 2026 — #FrameInGoa">
-<meta name="twitter:description" content="Make your Hacker House Goa 2026 PFP frame or Builder Badge and share it.">
-<meta name="twitter:image" content="https://hhgoa.com/og-default.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>HH Goa 2026 — Graphic Maker</title>
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Hacker House Goa 2026 — #FrameInGoa">
+  <meta property="og:description" content="Make your Hacker House Goa 2026 PFP frame or Builder Badge and share it.">
+  <meta property="og:image" content="https://hhgoa.com/og-default.png">
+  <meta property="og:url" content="https://hhgoa.com/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Hacker House Goa 2026 — #FrameInGoa">
+  <meta name="twitter:description" content="Make your Hacker House Goa 2026 PFP frame or Builder Badge and share it.">
+  <meta name="twitter:image" content="https://hhgoa.com/og-default.png">
 
-<link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;0,6..96,900;1,6..96,700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;0,6..96,900;1,6..96,700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
 </head>
+
 <body>
 
-<div class="bg-logo-watermark" aria-hidden="true"></div>
+  <div class="bg-logo-watermark" aria-hidden="true"></div>
 
-<div class="wrap">
+  <div class="wrap">
 
-  <header class="top">
-    <div class="brand">
-      <div class="brand-mark">HACKER<span class="goa-chip">गोवा</span>HOUSE</div>
+    <header class="top">
+      <div class="brand">
+        <div class="brand-mark">HACKER<span class="goa-chip">गोवा</span>HOUSE</div>
+        <div>
+          <h1 class="outlined-text"><a href="https://hhgoa.com/" target="_blank">Hacker Goa House</a></h1>
+          <p class="outlined-text">Your ID, Your Style</p>
+        </div>
+      </div>
+      <div class="nav-right">
+        <a href="https://hhgoa.com/" class="nav-home">← Home</a>
+        <span class="nav-studio">2:47 Studio</span>
+      </div>
+    </header>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="pfp">PFP Frame <b>Profile picture</b></button>
+      <button class="tab-btn" data-tab="badge">Builder Badge <b>Shareable card</b></button>
+    </div>
+
+    <div class="layout">
       <div>
-        <h1 class="outlined-text"><a href="https://hhgoa.com/" target="_blank">Hacker Goa House</a></h1>
-        <p class="outlined-text">Your ID, Your Style</p>
-      </div>
-    </div>
-    <div class="nav-right">
-      <a href="https://hhgoa.com/" class="nav-home">← Home</a>
-      <span class="nav-studio">2:47 Studio</span>
-    </div>
-  </header>
+        <div class="card">
+          <h2 class="section-title"><span class="num">1</span> Upload your photo</h2>
+          <div class="dropzone" id="dropzone">
+            <p>📷 Tap to choose a photo, or drag one in</p>
+            <div class="hint">JPG · PNG · HEIC — stays on this device</div>
+          </div>
+          <input type="file" id="fileInput" accept="image/*">
 
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="pfp">PFP Frame <b>Profile picture</b></button>
-    <button class="tab-btn" data-tab="badge">Builder Badge <b>Shareable card</b></button>
+          <div class="stage-wrap hidden" id="stageWrap">
+            <div class="stage" id="stage">
+              <canvas id="cropCanvas" width="640" height="640"></canvas>
+            </div>
+            <div class="zoom-row">
+              <label>ZOOM</label>
+              <input type="range" id="zoomSlider" min="100" max="300" value="100">
+            </div>
+            <div class="drag-hint">drag the photo to reposition</div>
+          </div>
+
+          <div class="status" id="uploadStatus"></div>
+        </div>
+
+        <div class="card" id="badgeFields" style="display:none;">
+          <h2 class="section-title"><span class="num">2</span> Your details</h2>
+          <div class="field">
+            <label>Name</label>
+            <input type="text" id="nameInput" maxlength="24" placeholder="e.g. Priya Menon">
+          </div>
+          <div class="field">
+            <label>Stack / role</label>
+            <input type="text" id="roleInput" maxlength="26" placeholder="e.g. Backend, Rust & Postgres">
+          </div>
+          <div class="field">
+            <label>Team</label>
+            <input type="text" id="companyInput" maxlength="30" placeholder="e.g. HH Goa, Acme Corp, or DAO">
+          </div>
+          <div class="field">
+            <label>Builder title </label>
+            <div class="title-row">
+              <input type="text" id="titleInput" maxlength="34">
+              <button class="reroll" id="rerollBtn" title="Generate another title">⟳</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <h2 class="section-title"><span class="num" id="outStepNum">2</span> Your graphic</h2>
+          <div class="output-canvas-wrap">
+            <canvas id="finalCanvas" width="1080" height="1080"></canvas>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-secondary" id="previewBtn">👁️ Preview Graphic</button>
+            <button class="btn btn-primary" id="downloadBtn">Download image</button>
+            <button class="btn btn-x" id="shareBtn">Share to X</button>
+          </div>
+          <div class="note" id="shareNote">Composited entirely in your browser — nothing is uploaded unless you tap
+            Share. On phones, <strong>Share to X</strong> attaches the image directly. On desktop it downloads the image
+            and opens X with your caption ready.</div>
+        </div>
+      </div>
+    </div><br>
+
+    <div class="footer-links">
+      <span class="fot">&copy; Hacker House Goa 2026 #FrameInGoa</span>
+    </div>
+
   </div>
 
-  <div class="layout">
-    <div>
-      <div class="card">
-        <h2 class="section-title"><span class="num">1</span> Upload your photo</h2>
-        <div class="dropzone" id="dropzone">
-          <p>📷 Tap to choose a photo, or drag one in</p>
-          <div class="hint">JPG · PNG · HEIC — stays on this device</div>
-        </div>
-        <input type="file" id="fileInput" accept="image/*">
-
-        <div class="stage-wrap hidden" id="stageWrap">
-          <div class="stage" id="stage">
-            <canvas id="cropCanvas" width="640" height="640"></canvas>
-          </div>
-          <div class="zoom-row">
-            <label>ZOOM</label>
-            <input type="range" id="zoomSlider" min="100" max="300" value="100">
-          </div>
-          <div class="drag-hint">drag the photo to reposition</div>
-        </div>
-
-        <div class="status" id="uploadStatus"></div>
+  <!-- Full Graphic Preview Modal -->
+  <div class="modal-overlay hidden" id="previewModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">👁️ Graphic Preview</h3>
+        <button class="modal-close" id="closePreviewModalBtn" title="Close">&times;</button>
       </div>
-
-      <div class="card" id="badgeFields" style="display:none;">
-        <h2 class="section-title"><span class="num">2</span> Your details</h2>
-        <div class="field">
-          <label>Name</label>
-          <input type="text" id="nameInput" maxlength="24" placeholder="e.g. Priya Menon">
-        </div>
-        <div class="field">
-          <label>Stack / role</label>
-          <input type="text" id="roleInput" maxlength="26" placeholder="e.g. Backend, Rust & Postgres">
-        </div>
-        <div class="field">
-          <label>Team</label>
-          <input type="text" id="companyInput" maxlength="30" placeholder="e.g. HH Goa, Acme Corp, or DAO">
-        </div>
-        <div class="field">
-          <label>Builder title </label>
-          <div class="title-row">
-            <input type="text" id="titleInput" maxlength="34">
-            <button class="reroll" id="rerollBtn" title="Generate another title">⟳</button>
-          </div>
-        </div>
+      <div class="modal-body">
+        <img id="modalPreviewImg" src="" alt="Full Graphic Preview">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="modalDownloadBtn">Download image</button>
+        <button class="btn btn-x" id="modalShareBtn">Share to X</button>
+        <button class="btn btn-secondary" id="modalCloseBtn">Close</button>
       </div>
     </div>
-
-    <div>
-      <div class="card">
-        <h2 class="section-title"><span class="num" id="outStepNum">2</span> Your graphic</h2>
-        <div class="output-canvas-wrap">
-          <canvas id="finalCanvas" width="1080" height="1080"></canvas>
-        </div>
-        <div class="btn-row">
-          <button class="btn btn-primary" id="downloadBtn">Download image</button>
-          <button class="btn btn-x" id="shareBtn">Share to X</button>
-        </div>
-        <div class="note" id="shareNote">Composited entirely in your browser — nothing is uploaded unless you tap Share. On phones, <strong>Share to X</strong> attaches the image directly. On desktop it downloads the image and opens X with your caption ready.</div>
-      </div>
-    </div>
-  </div><br>
-
-  <div class="footer-links">
-    <span class="fot">&copy; Hacker House Goa 2026 #FrameInGoa</span>
   </div>
 
-</div>
-<canvas id="cursorFx"></canvas>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.12.3/JsBarcode.all.min.js"></script>
-<script src="script.js"></script>
+  <canvas id="cursorFx"></canvas>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.12.3/JsBarcode.all.min.js"></script>
+  <script src="script.js"></script>
 </body>
+
 </html>

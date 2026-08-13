@@ -381,25 +381,31 @@
     ctx.textAlign='left';
     const name = ($('nameInput').value || 'Your Name').slice(0,22);
     const role = ($('roleInput').value || 'Builder').slice(0,24);
-    const company = ($('companyInput').value || 'HH Goa 2026').slice(0,30); // ✅ NEW
-    const teamVal = 'HH Goa 2026'; // Keep as fallback
+    const company = ($('companyInput').value || 'HH Goa 2026').slice(0,30);
+    const titleVal = ($('titleInput').value || 'Full-Stack Engineer').slice(0,34);
 
-    ctx.font = `700 ${34*sx}px 'Bodoni Moda'`; ctx.fillStyle='#012417';
-    ctx.fillText(name, fx, 748*sx);
+    // 1. Name
+    ctx.font = `700 ${32*sx}px 'Bodoni Moda'`; ctx.fillStyle='#012417';
+    ctx.fillText(name, fx, 730*sx);
 
-    ctx.font = `700 ${30*sx}px 'Bodoni Moda'`; ctx.fillStyle='#FF0080';
-    ctx.fillText(role.toUpperCase(), fx, 862*sx);
+    // 2. Role / Stack
+    ctx.font = `700 ${26*sx}px 'Bodoni Moda'`; ctx.fillStyle='#FF0080';
+    ctx.fillText(role.toUpperCase(), fx, 825*sx);
 
-    // Team/Company
-    ctx.font = `700 ${26*sx}px 'Bodoni Moda'`; ctx.fillStyle='#012417';
-    ctx.fillText(company, fx, 978*sx);
+    // 3. Team / Company
+    ctx.font = `700 ${24*sx}px 'Bodoni Moda'`; ctx.fillStyle='#012417';
+    ctx.fillText(company, fx, 915*sx);
 
-// Code (moved down slightly)
-    ctx.font = `700 ${30*sx}px 'Bodoni Moda'`; ctx.fillStyle='#FF0080';
-    ctx.fillText(uniqueCode, fx, 1105*sx);
+    // 4. Builder Title
+    ctx.font = `600 ${22*sx}px 'IBM Plex Mono'`; ctx.fillStyle='#036736';
+    ctx.fillText('⚡ ' + titleVal, fx, 1005*sx);
 
-// Barcode (moved down slightly)
-    const bcX = 474*sx, bcY = 1162*sx, bcW = 484*sx, bcH = 86*sx;
+    // 5. Code
+    ctx.font = `700 ${26*sx}px 'IBM Plex Mono'`; ctx.fillStyle='#FF0080';
+    ctx.fillText(uniqueCode, fx, 1095*sx);
+
+    // 6. Barcode
+    const bcX = 474*sx, bcY = 1145*sx, bcW = 484*sx, bcH = 80*sx;
     const bcCanvas = renderBarcodeCanvas(uniqueCode, Math.round(bcW), Math.round(bcH));
     ctx.drawImage(bcCanvas, bcX, bcY, bcW, bcH);
 
@@ -505,7 +511,7 @@
   });
   $('nameInput').addEventListener('input', drawFinal);
   $('roleInput').addEventListener('input', drawFinal);
-  $('companyInput').addEventListener('input', drawFinal); // ✅ NEW
+  $('companyInput').addEventListener('input', drawFinal);
   $('titleInput').addEventListener('input', drawFinal);
   $('titleInput').value = pickTitle('');
 
@@ -523,6 +529,44 @@
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(()=>URL.revokeObjectURL(url), 4000);
   });
+
+  // Preview Modal Handlers
+  function openPreviewModal(){
+    const modal = $('previewModal');
+    const img = $('modalPreviewImg');
+    if(modal && img && finalCanvas){
+      img.src = finalCanvas.toDataURL('image/png');
+      modal.classList.remove('hidden');
+    }
+  }
+
+  function closePreviewModal(){
+    const modal = $('previewModal');
+    if(modal) modal.classList.add('hidden');
+  }
+
+  if($('previewBtn')) $('previewBtn').addEventListener('click', openPreviewModal);
+  if($('closePreviewModalBtn')) $('closePreviewModalBtn').addEventListener('click', closePreviewModal);
+  if($('modalCloseBtn')) $('modalCloseBtn').addEventListener('click', closePreviewModal);
+  if($('previewModal')) {
+    $('previewModal').addEventListener('click', (e)=>{
+      if(e.target === $('previewModal')) closePreviewModal();
+    });
+  }
+
+  if($('modalDownloadBtn')) {
+    $('modalDownloadBtn').addEventListener('click', ()=>{
+      closePreviewModal();
+      if($('downloadBtn')) $('downloadBtn').click();
+    });
+  }
+
+  if($('modalShareBtn')) {
+    $('modalShareBtn').addEventListener('click', ()=>{
+      closePreviewModal();
+      if($('shareBtn')) $('shareBtn').click();
+    });
+  }
 
   // Uploads the graphic to the backend and returns a shareable page URL whose
   // OG meta tags (og:image, etc.) point at this exact generated image, so
